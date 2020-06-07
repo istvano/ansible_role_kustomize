@@ -1,0 +1,55 @@
+---
+- name: create download directory for kustomize installation
+  file:
+    state: directory
+    mode: 'u=rwx,go=rx'
+    dest: '{{ kustomize_download_dir }}'
+
+- name: download kustomize
+  get_url:
+    url: '{{ kustomize_mirror }}/{{ kustomize_redistribution_filename }}'
+    dest: '{{ kustomize_download_dir }}/{{ kustomize_download_filename }}'
+    sha256sum: '{{ kustomize_redistribution_sha256sum }}'
+    force: no
+    use_proxy: yes
+    validate_certs: yes
+    mode: 'u=rw,go=r'
+
+- name: create the kustomize staging dir
+  file:
+    state: directory
+    mode: 'u=rwx,go=rx'
+    dest: '{{ kustomize_staging_dir }}'
+
+- name: install unarchive module dependencies (apt, yum, dnf, zypper)
+  become: yes
+  package:
+    name:
+      - tar
+      - unzip
+    state: present
+  when: ansible_pkg_mgr in ('apt', 'yum', 'dnf', 'zypper')
+
+- name: extract kustomize
+  unarchive:
+    remote_src: yes
+    src: '{{ kustomize_download_dir }}/{{ kustomize_download_filename }}'
+    dest: '{{ kustomize_staging_dir }}'
+    exclude: '{{ kustomize_excluded_files }}'
+    creates: '{{ kustomize_staging_dir }}/{{ kustomize_redistribution_executable_filename }}'
+
+- name: create the kustomize installation dir
+  become: yes
+  file:
+    state: directory
+    dest: '{{ kustomize_install_dir }}'
+
+- name: install kustomize
+  become: yes
+  copy:
+    src: '{{ kustomize_staging_dir }}/{{ kustomize_redistribution_executable_filename }}'
+    remote_src: yes
+    dest: '{{ kustomize_install_dir }}/kustomize'
+    owner: root
+    group: root
+    mode: 'u=rwx,go=rx'

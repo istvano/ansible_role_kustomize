@@ -1,0 +1,25 @@
+---
+galaxy_info:
+  role_name: kustomize
+  description: Ansible role for downloading and installing the kustomize tool for Kubernetes.
+  author: Istvan Orban
+  license: MIT
+  min_ansible_version: 2.7
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+  galaxy_tags:
+    - kustomize
+    - kubernetes
+    - k8s
+    - development
+dependencies: []
