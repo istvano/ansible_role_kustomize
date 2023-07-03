@@ -1,9 +1,9 @@
 ---
 # kustomize version number
-kustomize_version: '3.6.1'
+kustomize_version: '5.1.0'
 
 # SHA256 sum for the redistributable kustomize package (i.e. kustomize-linux-amd64.tar.gz)
-kustomize_redistribution_sha256sum: '0aeca6a054183bd8e7c29307875c8162aba6d2d4e170d3e7751aa78660237126'
+kustomize_redistribution_sha256sum: '52f4cf1ba34d38fd55a9bef819e329c9a4561f5f57f8f539346038ab5026dda8'
 
 # Mirror to download the kustomize from
 kustomize_mirror: 'https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv{{ kustomize_version }}'
